@@ -1,0 +1,7 @@
+name 'harbor'
+maintainer 'Alex Naumchenko'
+license 'All Rights Reserved'
+description 'Installs/Configures harbor'
+long_description 'Installs/Configures harbor'
+version '0.1.0'
+chef_version '>= 14.0'
