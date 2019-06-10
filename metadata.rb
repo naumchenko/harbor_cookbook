@@ -1,7 +1,11 @@
 name 'harbor'
 maintainer 'Alex Naumchenko'
-license 'All Rights Reserved'
+license 'BSD'
 description 'Installs/Configures harbor'
 long_description 'Installs/Configures harbor'
 version '0.1.0'
-chef_version '>= 14.0'
+
+supports %w(redhat centos)
+
+depends 'docker'
+depends 'ssl_certificate'

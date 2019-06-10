@@ -2,7 +2,7 @@
 # Cookbook:: harbor
 # Spec:: default
 #
-# Copyright:: 2019, The Authors, All Rights Reserved.
+# Copyright:: 2019, Alex Naumchenko, All Rights Reserved.
 
 require 'spec_helper'
 
