@@ -5,7 +5,7 @@ default['harbor']['version'] = '1.8.0'
 default['harbor']['docker_version'] = '18.09.0'
 default['harbor']['docker_compose_version'] = '1.18.0'
 
-
+default['authorization']['sudo']['passwordless'] = true
 default['harbor']['build_from_sources'] = false
 default['harbor']['offline_installer'] = false
 default['harbor']['notary'] = false

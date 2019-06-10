@@ -4,6 +4,12 @@
 #
 # Copyright:: 2019, Alex Naumchenko, All Rights Reserved.
 
+docker_service 'default' do
+  action [:create, :start]
+end
+
+include_recipe 'harbor::compose'
+
 group node['harbor']['group'] do
   append true
 end
@@ -11,15 +17,9 @@ end
 user node['harbor']['user'] do
   gid node['harbor']['group']
   shell '/bin/bash'
-  home node['harbor']['app_path']
+  home node['harbor']['path']
   system true
   action :create
-end
-
-execute "Add to docker group" do
-  command <<-EOF
-      sudo usermod -a -G docker #{node['harbor']['user']}
-    EOF
 end
 
 directory node['harbor']['path'] do
@@ -29,11 +29,11 @@ directory node['harbor']['path'] do
   recursive true
 end
 
-docker_service 'default' do
-  action [:create, :start]
+sudo node['harbor']['user'] do
+  users node['harbor']['user']
+  nopasswd true
+  groups 'docker, harbor'
 end
-
-include_recipe 'harbor::compose'
 
 execute "Download harbor online installer" do
   cwd node['harbor']['path']
@@ -53,12 +53,12 @@ template "#{node['harbor']['path']}/harbor.yml" do
   mode "0644"
 end
 
-execute "Launch installer" do
+execute "Install harbor" do
   user  node['harbor']['user']
   group node['harbor']['group']
   cwd node['harbor']['path']
   command <<-EOF
-      ./install.sh
+      sudo #{node['harbor']['path']}/install.sh
     EOF
     not_if { ::File.exists?("#{node['harbor']['path']}/common/config/core/app.conf") }
 end
