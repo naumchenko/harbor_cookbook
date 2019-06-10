@@ -16,6 +16,12 @@ user node['harbor']['user'] do
   action :create
 end
 
+execute "Add to docker group" do
+  command <<-EOF
+      sudo usermod -a -G docker #{node['harbor']['user']}
+    EOF
+end
+
 directory node['harbor']['path'] do
   action :create
   owner node['harbor']['user']
@@ -48,6 +54,8 @@ template "#{node['harbor']['path']}/harbor.yml" do
 end
 
 execute "Launch installer" do
+  user  node['harbor']['user']
+  group node['harbor']['group']
   cwd node['harbor']['path']
   command <<-EOF
       ./install.sh
